@@ -25,6 +25,20 @@ module.exports = function(app, db) {
         })
     });
 
+    // Se pide por el DNI del infractor
+    app.get('/infracciones/propietario/:Filter', (req, res) => {
+        var filtro = req.params.Filter;
+        console.log("DNI pedido: " + filtro);
+        const details = { "Propietario.DNI": new RegExp(filtro + "/*") };
+        db.collection('InfraccionesDet').find(details).toArray(function(err, item) {
+            if (err) {
+                res.send({ 'error': 'error en el envio' });
+            } else {
+                res.send(item);
+            }
+        })
+    });
+
     /*app.post('/infraccion', (req, res) => {
         console.log(req.body)
         res.send('hello')
